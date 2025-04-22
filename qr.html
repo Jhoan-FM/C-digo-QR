@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulario de Contacto con QR</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #5178a0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    section {
+      background-color: #ffffff;
+      margin-top: 40px;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    label {
+      color: #34495e;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #74b9ff;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0985e3b0;
+    }
+
+    #qrcode {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <section>
+    <h1>Formulario de Contacto</h1>
+    <form id="contactForm">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" required>
+
+      <label for="apellido">Apellido:</label>
+      <input type="text" id="apellido" required>
+
+      <label for="telefono">Teléfono:</label>
+      <input type="tel" id="telefono" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+
+      <label for="empresa">Empresa:</label>
+      <input type="text" id="empresa">
+
+      <button type="submit">Generar QR</button>
+    </form>
+
+    <div id="qrcode"></div>
+  </section>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById('nombre').value;
+      const apellido = document.getElementById('apellido').value;
+      const telefono = document.getElementById('telefono').value;
+      const email = document.getElementById('email').value;
+      const empresa = document.getElementById('empresa').value;
+
+      const vCard = `
+BEGIN:VCARD
+VERSION:3.0
+N:${apellido};${nombre}
+FN:${nombre} ${apellido}
+ORG:${empresa}
+TEL;TYPE=CELL:${telefono}
+EMAIL:${email}
+END:VCARD
+`.trim();
+
+      document.getElementById('qrcode').innerHTML = '';
+
+      new QRCode(document.getElementById('qrcode'), {
+        text: vCard,
+        width: 200,
+        height: 200
+      });
+    });
+  </script>
+
+</body>
+</html>
